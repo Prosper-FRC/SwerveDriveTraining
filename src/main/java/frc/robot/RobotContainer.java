@@ -7,8 +7,14 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.SwerveCommand;
 import frc.robot.subsystems.Swerve;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -20,6 +26,8 @@ public class RobotContainer {
   
 private Swerve swerve;
 public static boolean centric = true;
+
+public static SendableChooser<Command> autoChooser;
 
   private final CommandXboxController driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
@@ -40,6 +48,10 @@ public static boolean centric = true;
         () -> driverController.getRightX(), 
         () -> centric));
 
+    autoChooser = AutoBuilder.buildAutoChooser();
+
+    Shuffleboard.getTab("Auton").add(autoChooser);
+
     configureBindings();
   }
 
@@ -50,6 +62,9 @@ public static boolean centric = true;
     driverController.y().onTrue(swerve.resetGyro());
   }
 
+  public static Command getAutonomousCommand() {
+    return autoChooser.getSelected();
+	}
 
   }
 
