@@ -59,7 +59,7 @@ public static SendableChooser<Command> autoChooser;
   private void configureBindings() {
     driverController.leftBumper().onTrue(new InstantCommand(() -> centric = !centric));
 
-    driverController.y().onTrue(swerve.resetGyro());
+    driverController.y().onTrue(new InstantCommand(() -> swerve.resetGyro()));
   }
 
   public static Command getAutonomousCommand() {

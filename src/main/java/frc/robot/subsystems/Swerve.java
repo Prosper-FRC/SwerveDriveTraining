@@ -146,7 +146,7 @@ public class Swerve extends SubsystemBase {
       SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, SwerveConstants.maxSpeed);
 
       for (int i = 0; i < 4; i++) {
-        mods[1].setDesiredState(swerveModuleStates[i]);
+        mods[i].setDesiredState(swerveModuleStates[i]);
       }
    
     }
@@ -154,8 +154,8 @@ public class Swerve extends SubsystemBase {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    public Command resetGyro() {
-      return new InstantCommand(() -> gyro.setYaw(0.0));
+    public void resetGyro() {
+      gyro.setYaw(0.0);
     }
 
 

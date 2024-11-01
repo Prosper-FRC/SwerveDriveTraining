@@ -51,17 +51,18 @@ public class SwerveModule extends SubsystemBase {
 
     drivePID = new VelocityVoltage(0, 0, false, 0, 0, false, false, false);
 
+    configs = new CTREConfigs(CANCoderID);
+
     driveMotor = new TalonFX(driveMotorID);
     configDrive();
 
     azimuthMotor = new TalonFX(azimuthMotorID);
-
+    configAzimuth();
 
     CANCoder = new CANcoder(CANCoderID);
     configCANCoder();
   
-    configs = new CTREConfigs(CANCoderID);
-    configAzimuth();
+  
 
     resetToAbsolute();
 
