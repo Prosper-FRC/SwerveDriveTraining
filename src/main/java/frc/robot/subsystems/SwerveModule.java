@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CTREConfigs;
 import frc.robot.lib.DriveConversions;
@@ -53,16 +54,15 @@ public class SwerveModule extends SubsystemBase {
 
     configs = new CTREConfigs(CANCoderID);
 
-    driveMotor = new TalonFX(driveMotorID);
+    driveMotor = new TalonFX(driveMotorID, "drivebase");
     configDrive();
 
-    azimuthMotor = new TalonFX(azimuthMotorID);
+    azimuthMotor = new TalonFX(azimuthMotorID, "drivebase");
     configAzimuth();
 
-    CANCoder = new CANcoder(CANCoderID);
+    CANCoder = new CANcoder(CANCoderID, "drivebase");
     configCANCoder();
-  
-  
+
 
     resetToAbsolute();
 
@@ -78,7 +78,7 @@ public class SwerveModule extends SubsystemBase {
 
   private void configDrive() {
     // driveMotor.getConfigurator().apply(new TalonFXConfiguration());
-    driveMotor.clearStickyFault_BootDuringEnable(2.5);
+    // driveMotor.clearStickyFault_BootDuringEnable(2.5);
     driveMotor.getConfigurator().apply(configs.swerveDriveFXConfig);
     driveMotor.setInverted(SwerveConstants.driveMotorInvert);
     driveMotor.setNeutralMode(NeutralModeValue.Brake);
@@ -86,7 +86,7 @@ public class SwerveModule extends SubsystemBase {
   }
 
   private void configAzimuth() {
-    azimuthMotor.clearStickyFault_BootDuringEnable(2.5);
+    // azimuthMotor.clearStickyFault_BootDuringEnable(2.5);
     azimuthMotor.getConfigurator().apply(configs.swerveAngleFXConfig);
     azimuthMotor.setInverted(SwerveConstants.angleMotorInvert);
     azimuthMotor.setNeutralMode(NeutralModeValue.Brake);
@@ -100,9 +100,28 @@ public class SwerveModule extends SubsystemBase {
     return new SwerveModulePosition(DriveConversions.rotationsToMeters(driveMotor.getPosition().getValueAsDouble(), SwerveConstants.wheelCircumference),  getAngle());
   }
 
+  public double getRelativePos() {
+    return azimuthMotor.getPosition().getValueAsDouble() * 360;
+  }
+
+  public double getAbsolutePos() {
+    return CANCoder.getPosition().getValueAsDouble() * 360;
+  }
+
+  public TalonFX getDriveMotor() {
+    return driveMotor;
+  }
+
+  public CANcoder getCANcoder() {
+    return CANCoder;
+  }
+
+
   public Rotation2d getAngle() {
     return Rotation2d.fromRotations(azimuthMotor.getPosition().getValueAsDouble());
   }
+
+
 
   public void setSpeed(SwerveModuleState desiredState) {
     double vel = DriveConversions.MPSToFalcon(desiredState.speedMetersPerSecond, SwerveConstants.wheelCircumference, SwerveConstants.driveGearRatio);
@@ -112,7 +131,7 @@ public class SwerveModule extends SubsystemBase {
   public void setDesiredState(SwerveModuleState state) {
     state = SwerveModuleState.optimize(state, getState().angle);
 
-    azimuthMotor.setControl(azimuthPID.withVelocity(state.angle.getRotations()));
+    azimuthMotor.setControl(azimuthPID.withPosition(state.angle.getRotations()));
 
     setSpeed(state);
   }
@@ -127,12 +146,12 @@ public class SwerveModule extends SubsystemBase {
   public void resetToAbsolute() {
     Rotation2d actualAngle = (Rotation2d.fromRotations(CANCoder.getAbsolutePosition().getValueAsDouble())).minus(angleOffset);
 
-    azimuthMotor.setPosition(actualAngle.getRotations(), 3);
+    azimuthMotor.setPosition(actualAngle.getRotations());
   }
   
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+
   }
 }
