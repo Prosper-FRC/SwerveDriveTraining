@@ -18,14 +18,14 @@ public class SwerveCommand extends Command {
   private DoubleSupplier translationSup;
   private DoubleSupplier strafeSup;
   private DoubleSupplier rotationSup;
-  private BooleanSupplier centricSup;
+  private BooleanSupplier isCentricSup;
 
   public SwerveCommand(Swerve swerve, DoubleSupplier translationSup, DoubleSupplier strafeSup, DoubleSupplier rotationSup, BooleanSupplier centricSup) {
     this.swerve = swerve;
     this.translationSup = translationSup;
     this.strafeSup = strafeSup;
     this.rotationSup = rotationSup;
-    this.centricSup = centricSup;
+    this.isCentricSup = centricSup;
 
     addRequirements(swerve);
   }
@@ -40,14 +40,14 @@ public class SwerveCommand extends Command {
     double translation = translationSup.getAsDouble();
     double strafe = strafeSup.getAsDouble();
     double rotation = rotationSup.getAsDouble();
-    boolean centric = centricSup.getAsBoolean();
+    boolean centric = isCentricSup.getAsBoolean();
 
     swerve.drive(
       // The value as of now is between 0 and 1 // 
       // Multiplying by the max speed helps finding the real demand that was applied //
       new Translation2d(translation, strafe).times(SwerveConstants.maxSpeed), 
-      rotation * SwerveConstants.maxAngularVelocity * 2, 
-      centric
+        rotation * SwerveConstants.maxAngularVelocity * SwerveConstants.rotSensitivityMultiplier, 
+        centric
       );
   }
 

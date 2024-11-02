@@ -14,8 +14,8 @@ public class DriveConversions {
         return motorVelocity;
     }
 
-    public static double toMPS(double RPS, double circumference) {
-        double MPS = RPS * circumference;
+    public static double toMPS(double RPS, double circumferenceMeters) {
+        double MPS = RPS * circumferenceMeters;
         return MPS;
     }
 

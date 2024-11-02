@@ -25,6 +25,8 @@ public class SwerveConstants {
 		public static final double wheelDiameter = Units.inchesToMeters(4); 
 		public static final double wheelCircumference = wheelDiameter * Math.PI;
 
+		public static final int rotSensitivityMultiplier = 2;
+
 		public static final double translationMultiplier = 1.25;
 		public static final double rotationMultiplier = 0.75;
 
