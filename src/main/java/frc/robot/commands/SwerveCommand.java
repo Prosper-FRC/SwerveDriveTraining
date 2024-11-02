@@ -46,7 +46,7 @@ public class SwerveCommand extends Command {
       // The value as of now is between 0 and 1 // 
       // Multiplying by the max speed helps finding the real demand that was applied //
       new Translation2d(translation, strafe).times(SwerveConstants.maxSpeed), 
-        rotation * SwerveConstants.maxAngularVelocity * SwerveConstants.rotSensitivityMultiplier, 
+        rotation * SwerveConstants.maxAngularVelocity, 
         centric
       );
   }
