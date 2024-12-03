@@ -4,6 +4,10 @@
 
 package frc.robot.subsystems;
 
+import javax.swing.text.StyleContext.SmallAttributeSet;
+
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -17,6 +21,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -46,7 +51,6 @@ public class Swerve extends SubsystemBase {
       new SwerveModule(1, 12, 22, 32, Rotation2d.fromRotations(0.316406), "Front Right"),
       new SwerveModule(2, 13, 23, 33, Rotation2d.fromRotations(-0.164307), "Back Left"),
       new SwerveModule(3, 14, 24, 34, Rotation2d.fromRotations(-0.390137), "Back Right"),
-  
     };
 
     positions = new SwerveModulePosition[4];
@@ -127,9 +131,9 @@ public class Swerve extends SubsystemBase {
     }
 
   ////////////////////////////////////////// Drive method: ////////////////////////////////////////////////////
-
+  ChassisSpeeds desiredChassisSpeeds;
    public void drive(Translation2d translation, double rotation, boolean centric) {
-    ChassisSpeeds desiredChassisSpeeds;
+    
 
     if (centric) {
         desiredChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
@@ -184,6 +188,8 @@ public class Swerve extends SubsystemBase {
     SmartDashboard.putNumber(mods[1] + "/Absolute Azimuth", mods[1].getAbsolutePos());
     SmartDashboard.putNumber(mods[2] + "/Absolute Azimuth", mods[2].getAbsolutePos());
     SmartDashboard.putNumber(mods[3] + "/Absolute Azimuth", mods[3].getAbsolutePos());
+
+    Logger.recordOutput("Setpoint", desiredChassisSpeeds);
   }
 
 }

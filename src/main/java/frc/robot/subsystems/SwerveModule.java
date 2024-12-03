@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.logging.Logger;
+
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
@@ -38,6 +40,7 @@ public class SwerveModule extends SubsystemBase {
   PositionDutyCycle azimuthPID;
   VelocityVoltage drivePID;
 
+  public int driveSetpoint = 0;
   private CTREConfigs configs;
 
   public SwerveModule(int moduleNumber, int driveMotorID, int azimuthMotorID, int CANCoderID, Rotation2d angleOffset, String name) {
@@ -152,6 +155,5 @@ public class SwerveModule extends SubsystemBase {
 
   @Override
   public void periodic() {
-
   }
 }

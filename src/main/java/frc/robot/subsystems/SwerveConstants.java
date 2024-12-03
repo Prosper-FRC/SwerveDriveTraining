@@ -86,8 +86,8 @@ public class SwerveConstants {
 		public static final double maxAngularVelocity = 4.75;
 
 		public static HolonomicPathFollowerConfig config = new HolonomicPathFollowerConfig(
-			new PIDConstants(SwerveConstants.driveKP, 0.0, 0.0), 
-			new PIDConstants(SwerveConstants.angleKP, 0.0, 0.0),
+			new PIDConstants(0.3, 0.0, 0.0), // 0.1
+			new PIDConstants(1.6, 0.0, 0.0), // 2.5
 			maxSpeed, 
 			wheelBase,
 			new ReplanningConfig(true, true));
